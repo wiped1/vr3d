@@ -1,8 +1,11 @@
 #include "ofApp.h"
 
+#include <OffAxisCamera.h>
+
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    Camera *cam = dynamic_cast<Camera *>(scene.addNode(new OffAxisCamera()));
+    scene.setCamera(cam);
 }
 
 //--------------------------------------------------------------
@@ -56,6 +59,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }

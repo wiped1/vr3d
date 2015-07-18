@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include <algorithm>
+
 Scene::Scene()
 {
     //ctor
@@ -12,14 +14,14 @@ Scene::~Scene()
     }
 }
 
-Node* Scene::addNode(Node *node)
+Node * Scene::addNode(Node *node)
 {
     /* std::vector::insert(iterator pos, const T& value returns iterator to
      * newly added element */
     return *nodes.insert(nodes.end(), node);
 }
 
-void Scene::removeNode(const Node* node)
+void Scene::removeNode(const Node *node)
 {
     nodes.erase(std::find(nodes.begin(), nodes.end(), node));
 }
@@ -38,11 +40,11 @@ void Scene::update()
     }
 }
 
-void Scene::draw()
+void Scene::render()
 {
     camera->begin();
     for (Node *node : nodes) {
-        node->draw();
+        node->render();
     }
     camera->end();
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <Node.h>
 #include <Camera.h>
 
@@ -9,16 +10,16 @@ class Scene
 private:
     std::vector<Node *> nodes;
     Camera *camera;
-/* public functions */
+/* public member functions */
 public:
     Scene();
-    Node* addNode(Node *node);
-    void removeNode(const Node &node);
+    Node * addNode(Node *node);
+    void removeNode(const Node *node);
     void setCamera(Camera *node);
     void setup();
     void update();
-    void draw();
+    void render();
     ~Scene();
-/* private functions */
+/* private member functions */
 private:
 };

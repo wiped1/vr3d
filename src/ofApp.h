@@ -1,9 +1,14 @@
 #pragma once
 
 #include "ofMain.h"
+#include <Scene.h>
 
 class ofApp : public ofBaseApp
 {
+/* private members */
+private:
+    Scene scene;
+/* public member functions */
 public:
     void setup();
     void update();
