@@ -1,46 +1,48 @@
-#include "BoxScene.h"
+#include "Scene.h"
 
-BoxScene::BoxScene()
+Scene::Scene()
 {
     //ctor
 }
 
-BoxScene::~BoxScene()
+Scene::~Scene()
 {
     for (Node *node : nodes) {
         delete node;
     }
 }
 
-Node* BoxScene::addNode(Node* node)
+Node* Scene::addNode(Node *node)
 {
     /* std::vector::insert(iterator pos, const T& value returns iterator to
      * newly added element */
     return *nodes.insert(nodes.end(), node);
 }
 
-void BoxScene::removeNode(const Node* node)
+void Scene::removeNode(const Node* node)
 {
     nodes.erase(std::find(nodes.begin(), nodes.end(), node));
 }
 
-void BoxScene::setup()
+void Scene::setup()
 {
     for (Node *node : nodes) {
         node->setup();
     }
 }
 
-void BoxScene::update()
+void Scene::update()
 {
-    for (Node* node : nodes) {
+    for (Node *node : nodes) {
         node->update();
     }
 }
 
-void BoxScene::draw()
+void Scene::draw()
 {
-    for (Node* node : nodes) {
+    camera->begin();
+    for (Node *node : nodes) {
         node->draw();
     }
+    camera->end();
 }
