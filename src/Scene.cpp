@@ -40,7 +40,7 @@ void Scene::update()
     }
 }
 
-void Scene::render()
+void Scene::render(const Camera *camera)
 {
     camera->begin();
     for (Node *node : nodes) {

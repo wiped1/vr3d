@@ -9,16 +9,15 @@ class Scene
 /* private members */
 private:
     std::vector<Node *> nodes;
-    Camera *camera;
 /* public member functions */
 public:
     Scene();
-    Node * addNode(Node *node);
+    Node* addNode(Node *node);
     void removeNode(const Node *node);
     void setCamera(Camera *node);
     void setup();
     void update();
-    void render();
+    void render(const Camera *camera);
     ~Scene();
 /* private member functions */
 private:
