@@ -17,7 +17,7 @@ public:
     void setCamera(Camera *node);
     void setup();
     void update();
-    void render(const Camera *camera);
+    void render(Camera *camera);
     ~Scene();
 /* private member functions */
 private:

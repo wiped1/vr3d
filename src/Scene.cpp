@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include <algorithm>
+#include "ofMain.h"
 
 Scene::Scene()
 {
@@ -40,8 +41,10 @@ void Scene::update()
     }
 }
 
-void Scene::render(const Camera *camera)
+void Scene::render(Camera *camera)
 {
+    ofBackground(0.0, 1.0);
+    ofEnableDepthTest();
     camera->begin();
     for (Node *node : nodes) {
         node->render();

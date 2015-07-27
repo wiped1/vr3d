@@ -1,4 +1,5 @@
 ofxAssimpModelLoader
+ofxOpenCv
+ofxXmlSettings
 ofxFaceTracker
 ofxUI
-ofxCv
