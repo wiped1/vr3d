@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include <Scene.h>
 #include <OffAxisCamera.h>
+#include "ofxAssimpModelLoader.h"
 
 class ofApp : public ofBaseApp
 {
@@ -10,6 +11,7 @@ class ofApp : public ofBaseApp
 private:
     Scene scene;
     OffAxisCamera *cam;
+    ofxAssimpModelLoader model;
 /* public member functions */
 public:
     void setup();

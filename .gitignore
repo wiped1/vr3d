@@ -1,4 +1,5 @@
 /obj
 /bin/libs
 /bin/vr3d_debug
-vr3d.workspace.layout
+*.depend
+*.layout
