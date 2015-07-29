@@ -1,17 +1,20 @@
 #pragma once
 
 #include "ofMain.h"
-#include <Scene.h>
-#include <OffAxisCamera.h>
 #include "ofxAssimpModelLoader.h"
+#include <OffAxisCamera.h>
+#include <GridBox.h>
 
 class ofApp : public ofBaseApp
 {
 /* private members */
 private:
-    Scene scene;
-    OffAxisCamera *cam;
+    OffAxisCamera cam;
     ofxAssimpModelLoader model;
+    GridBox gridBox;
+    ofImage roomTexture;
+    ofLight directionalLight;
+
 /* public member functions */
 public:
     void setup();

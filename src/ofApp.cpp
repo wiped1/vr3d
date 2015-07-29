@@ -2,74 +2,63 @@
 
 #include <iostream>
 #include <OffAxisCamera.h>
-#include <Node.h>
-
-class BoxyBox : public Node
-{
-private:
-    ofVec3f pos;
-    ofColor color;
-public:
-    BoxyBox(ofVec3f pos, ofColor color) : pos(pos), color(color)
-    {
-
-    }
-
-    virtual void setup()
-    {
-
-    }
-
-    virtual void update()
-    {
-
-    }
-
-    virtual void render()
-    {
-        ofSetColor(color);
-        ofDrawBox(pos, 5.0); // x, y, z, size
-    }
-};
-
 
 void ofApp::setup()
 {
     double cameraSize = 15;
-    double aspectRatio = static_cast<double>(ofGetWidth()) / ofGetHeight(); // 1024/768 = 1.(3)
-    ofVec3f topLeft(-cameraSize * aspectRatio, cameraSize, 0.0); // -15 * 1.(3) = -19,5, 15
-    ofVec3f botLeft(-cameraSize * aspectRatio, -cameraSize, 0.0); // -15 * 1.(3) = -19.5, -15
-    ofVec3f botRight(cameraSize * aspectRatio, -cameraSize, 0.0); // 15 * 1.(3) = 19.5, -15
-    cam = dynamic_cast<OffAxisCamera *>(scene.addNode(new OffAxisCamera(
-            topLeft, botLeft, botRight)));
-    cam->setPosition(ofVec3f(0.0, 0.0, 50.0f));
+    double aspectRatio = static_cast<double>(ofGetWidth()) / ofGetHeight();
+    ofVec3f topLeft (-cameraSize * aspectRatio,  cameraSize, 0.0);
+    ofVec3f botLeft (-cameraSize * aspectRatio, -cameraSize, 0.0);
+    ofVec3f botRight( cameraSize * aspectRatio, -cameraSize, 0.0);
+    cam = OffAxisCamera(topLeft, botLeft, botRight);
+    cam.setPosition(ofVec3f(0.0, 0.0, 50.0f));
 
-    scene.addNode(new BoxyBox(ofVec3f(0.0, 0.0, 0.0), ofColor::red));
-    scene.addNode(new BoxyBox(ofVec3f(0.0, 0.0, -5.0), ofColor::yellow));
-    scene.addNode(new BoxyBox(ofVec3f(-10.0, -10.0, -10.0), ofColor::green));
-    scene.addNode(new BoxyBox(ofVec3f(10.0, 10.0, 10.0), ofColor::blue));
+    if (model.loadModel("devbot.3ds", true)) {
+        model.setScale(0.02f, 0.02f, 0.02f);
+        model.setPosition(0.0f, 0.0f, -5.0f);
+    } else {
+        std::cerr << "Failed to load model." << std::endl;
+    }
 
-    /* when exporting from blender make sure to export with correct handedness
-     * for of which has right hand coordinate system correct export would be
-     * -Z up, and Y forward
-     */
-    model.loadModel("devbot.3ds", true);
+    directionalLight.setDirectional();
+    directionalLight.setOrientation(ofVec3f(180.0f, 0.0f, 0.0f));
+
+    ofVec3f camWidthVec = botRight - botLeft;
+    double camWidth = camWidthVec.length();
+    gridBox = GridBox(ofVec3f(-cameraSize * aspectRatio, -cameraSize, 0.0f),
+            camWidth, camWidth / aspectRatio, 10.0f, 8.0f);
 }
 
 void ofApp::update()
 {
-    scene.update();
-    model.setPosition(0.0f, 5.0f, 0.0f);
+    cam.update();
 }
 
 void ofApp::draw()
 {
-    scene.render(cam);
-    cam->begin();
-    model.enableMaterials();
-    model.setScale(0.01f, 0.01f, 0.01f);
+    ofClear(0.0, 1.0);
+//    ofEnableLighting();
+    ofEnableDepthTest();
+
+    cam.begin();
+//    directionalLight.enable();
+    ofSetColor(ofColor::green);
+    model.setPosition(0.0f, -2.0f, 0.0f);
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
-    cam->end();
+
+    ofSetColor(ofColor::red);
+    model.setPosition(5.0f, -2.0f, 5.0f);
+    model.draw(ofPolyRenderMode::OF_MESH_FILL);
+
+    ofSetColor(ofColor::blue);
+    model.setPosition(-5.0f, -2.0f, -5.0f);
+    model.draw(ofPolyRenderMode::OF_MESH_FILL);
+
+    ofSetColor(ofColor::white);
+    gridBox.draw();
+//    directionalLight.disable();
+    cam.end();
+
 }
 
 void ofApp::keyPressed(int key)

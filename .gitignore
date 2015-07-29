@@ -1,5 +1,9 @@
+/bin
+!/bin/data/*
 /obj
 /bin/libs
 /bin/vr3d_debug
 *.depend
 *.layout
+*.swp
+*.swo
