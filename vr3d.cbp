@@ -594,22 +594,16 @@
 		<Unit filename="config.make">
 			<Option virtualFolder="build config" />
 		</Unit>
-		<Unit filename="src/Camera.h">
+		<Unit filename="src/GridBox.cpp">
 			<Option virtualFolder="src/" />
 		</Unit>
-		<Unit filename="src/Node.h">
+		<Unit filename="src/GridBox.h">
 			<Option virtualFolder="src/" />
 		</Unit>
 		<Unit filename="src/OffAxisCamera.cpp">
 			<Option virtualFolder="src/" />
 		</Unit>
 		<Unit filename="src/OffAxisCamera.h">
-			<Option virtualFolder="src/" />
-		</Unit>
-		<Unit filename="src/Scene.cpp">
-			<Option virtualFolder="src/" />
-		</Unit>
-		<Unit filename="src/Scene.h">
 			<Option virtualFolder="src/" />
 		</Unit>
 		<Unit filename="src/main.cpp">

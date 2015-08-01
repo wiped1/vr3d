@@ -12,28 +12,21 @@ GridBox::GridBox(ofVec3f origin, double width, double height, double depth, doub
  */
 void drawGrid(ofVec3f botLeft, ofVec3f botRight, ofVec3f topRight, double divisionFactor)
 {
-    /* direction vector pointing from botLeft to botRight */
-    ofVec3f direction = botRight - botLeft;
-    ofVec3f slice = direction / divisionFactor;
-
-    /* draw vertical lines */
-    /* `t` is a traverse vector, that points along previously defined direction vector
-     * and allows us to specify points from which we will draw lines across the grid */
-    for (ofVec3f t = botLeft; t != botRight + slice; t += slice) {
+    double slice = 1.0 / divisionFactor;
+    for (double t = 0.0; t <= 1.0; t += slice) {
+        /* vertical lines */
+        ofVec3f origin = (1-t) * botLeft + t * botRight;
         ofVec3f drawDirection = topRight - botRight;
-        ofVec3f drawPoint = t + drawDirection;
-        ofLine(t.x, t.y, t.z, drawPoint.x, drawPoint.y, drawPoint.z);
-    }
+        ofVec3f drawTo = origin + drawDirection;
+        ofLine(origin.x, origin.y, origin.z,
+               drawTo.x, drawTo.y, drawTo.z);
 
-    /* direction vector pointing `up` from botLeft */
-    direction = (botLeft + (topRight - botRight)) - botLeft;
-    slice = direction / divisionFactor;
-
-    /* draw horizontal lines */
-    for (ofVec3f t = botLeft; t != (botLeft + direction) + slice; t += slice) {
-        ofVec3f drawDirection = botRight - botLeft;
-        ofVec3f drawPoint = t + drawDirection;
-        ofLine(t.x, t.y, t.z, drawPoint.x, drawPoint.y, drawPoint.z);
+        /* horizontal lines */
+        origin = (1-t) * botLeft + t * (botLeft + (topRight - botRight));
+        drawDirection = botRight - botLeft;
+        drawTo = origin + drawDirection;
+        ofLine(origin.x, origin.y, origin.z,
+               drawTo.x, drawTo.y, drawTo.z);
     }
 }
 
