@@ -6,7 +6,7 @@
 OffAxisCamera::OffAxisCamera(ofVec3f topLeft, ofVec3f botLeft, ofVec3f botRight)
     : topLeft(topLeft), botLeft(botLeft), botRight(botRight)
 {
-    cam.setNearClip(0.0001);
+    cam.setNearClip(0.001);
 }
 
 void OffAxisCamera::update()

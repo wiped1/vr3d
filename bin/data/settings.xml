@@ -1,0 +1,41 @@
+<Widget>
+    <Kind>2</Kind>
+    <Name>FULLSCREEN</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>ENABLE FACE TRACKING</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>SHOW TRACKER</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>CAMERA Z</Name>
+    <Value>45.960590363</Value>
+</Widget>
+<Widget>
+    <Kind>11</Kind>
+    <Name>CAMERA X, Y</Name>
+    <XValue>-0.147783160</XValue>
+    <YValue>-10.000000000</YValue>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>TRACKER X SENSITIVITY</Name>
+    <Value>0.280788183</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>TRACKER Y SENSITIVITY</Name>
+    <Value>0.251231521</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>TRACKER Z SENSITIVITY</Name>
+    <Value>8.374383926</Value>
+</Widget>
