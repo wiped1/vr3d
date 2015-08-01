@@ -6,18 +6,11 @@
 OffAxisCamera::OffAxisCamera(ofVec3f topLeft, ofVec3f botLeft, ofVec3f botRight)
     : topLeft(topLeft), botLeft(botLeft), botRight(botRight)
 {
-    //ctor
+    cam.setNearClip(0.0001);
 }
 
 void OffAxisCamera::update()
 {
-    unsigned long mili =
-        std::chrono::system_clock::now().time_since_epoch() /
-        std::chrono::milliseconds(1);
-    double damping = 10;
-    setPosition(std::cos(mili * M_PI/180 / damping) * 10.0,
-                std::sin(mili * M_PI/180 / damping) * 10.0,
-                cam.getPosition().z);
     cam.setupOffAxisViewPortal(topLeft, botLeft, botRight);
 }
 
