@@ -1,7 +1,7 @@
 #include "GridBox.h"
 
-GridBox::GridBox(ofVec3f origin, double width, double height, double depth, double divisionFactor)
-    : origin(origin), width(width), height(height), depth(depth), divisionFactor(divisionFactor)
+GridBox::GridBox(ofVec3f origin, double width, double height, double divisionFactor)
+    : origin(origin), width(width), height(height), divisionFactor(divisionFactor)
 {
     // do nothing
 }
@@ -10,6 +10,7 @@ GridBox::GridBox(ofVec3f origin, double width, double height, double depth, doub
  * @origin point of origin
  * @diagonalEnd point at the end of the diagonal from origin
  */
+/* TODO change topRight to topLeft */
 void drawGrid(ofVec3f botLeft, ofVec3f botRight, ofVec3f topRight, double divisionFactor)
 {
     double slice = 1.0 / divisionFactor;
@@ -30,7 +31,7 @@ void drawGrid(ofVec3f botLeft, ofVec3f botRight, ofVec3f topRight, double divisi
     }
 }
 
-void GridBox::draw()
+void GridBox::draw(float depth)
 {
     /* even though drawGrid allows for drawing skewed grids,
      * we disallow it in GridBox for simplicity purposes */

@@ -12,6 +12,8 @@ class ofApp : public ofBaseApp
 {
 /* private members */
 private:
+    const double CAMERA_SIZE = 15;
+
     OffAxisCamera cam;
     ofVideoGrabber videoGrabber;
     ofxFaceTracker tracker;
@@ -29,6 +31,9 @@ private:
     float trackerSensitivityX;
     float trackerSensitivityY;
     float trackerSensitivityZ;
+    float modelsZPosition;
+    float modelsSeparation;
+    float gridBoxDepth;
 
 /* public member functions */
 public:
@@ -49,4 +54,8 @@ public:
     void exit();
     void setupGui();
     void guiEvent(ofxUIEventArgs& e);
+
+/* private member functions */
+private:
+    void setupScene(int width, int height);
 };

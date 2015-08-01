@@ -12,14 +12,12 @@ private:
     double width;
     /* height along the Y+ axis */
     double height;
-    /* depth along the Z- axis  */
-    double depth;
     /* plane division factor */
     double divisionFactor;
 
 /* public functions */
 public:
     GridBox() { }
-    GridBox(ofVec3f origin, double width, double height, double depth, double divisionFactor);
-    void draw();
+    GridBox(ofVec3f origin, double width, double height, double divisionFactor);
+    void draw(float depth);
 };

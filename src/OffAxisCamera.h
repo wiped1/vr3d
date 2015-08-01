@@ -20,5 +20,6 @@ public:
     void end();
     void setPosition(double x, double y, double z);
     void setPosition(ofVec3f position);
+    void setFarFrustrum(ofVec3f topLeft, ofVec3f botLeft, ofVec3f botRight);
     ofVec3f getPosition();
 };

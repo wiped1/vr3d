@@ -34,6 +34,13 @@ void OffAxisCamera::setPosition(ofVec3f position)
     setPosition(position.x, position.y, position.z);
 }
 
+void OffAxisCamera::setFarFrustrum(ofVec3f topLeft, ofVec3f botLeft, ofVec3f botRight)
+{
+    this->topLeft = topLeft;
+    this->botLeft = botLeft;
+    this->botRight = botRight;
+}
+
 ofVec3f OffAxisCamera::getPosition()
 {
     return cam.getPosition();

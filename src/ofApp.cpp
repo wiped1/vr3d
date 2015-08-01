@@ -8,29 +8,41 @@ void ofApp::setupGui() {
     gui->addToggle("ENABLE FACE TRACKING", true);
     gui->addToggle("SHOW TRACKER", false);
     gui->addSpacer();
-    gui->addSlider("CAMERA Z", 10.0, 60.0, &camZ);
+    gui->addSlider("CAMERA Z", 10.0, 100.0, &camZ);
     camXY = gui->add2DPad("CAMERA X, Y", ofPoint(-10, 10), ofPoint(10, -10), ofPoint(0, 0));
     camXY->setIncrement(0.1);
     gui->addSpacer();
     gui->addSlider("TRACKER X SENSITIVITY", 0.0, 1.0, &trackerSensitivityX);
     gui->addSlider("TRACKER Y SENSITIVITY", 0.0, 1.0, &trackerSensitivityY);
     gui->addSlider("TRACKER Z SENSITIVITY", 0.0, 50.0, &trackerSensitivityZ);
+    gui->addSpacer();
+    gui->addSlider("MODELS Z POSITION", -20.0, 10.0, &modelsZPosition);
+    gui->addSlider("MODELS SEPARATION", -50.0, 50.0, &modelsSeparation);
+    gui->addSlider("GRIDBOX DEPTH", 0.0, 50.0, &gridBoxDepth);
     gui->autoSizeToFitWidgets();
     ofAddListener(gui->newGUIEvent, this, &ofApp::guiEvent);
     gui->loadSettings("settings.xml");
 }
 
-void ofApp::setup()
+void ofApp::setupScene(int width, int height)
 {
     /* setup camera */
-    double cameraSize = 15;
-    double aspectRatio = static_cast<double>(ofGetWidth()) / ofGetHeight();
-    ofVec3f topLeft (-cameraSize * aspectRatio,  cameraSize, 0.0);
-    ofVec3f botLeft (-cameraSize * aspectRatio, -cameraSize, 0.0);
-    ofVec3f botRight( cameraSize * aspectRatio, -cameraSize, 0.0);
+    double aspectRatio = static_cast<double>(width) / height;
+    ofVec3f topLeft (-CAMERA_SIZE * aspectRatio,  CAMERA_SIZE, 0.0);
+    ofVec3f botLeft (-CAMERA_SIZE * aspectRatio, -CAMERA_SIZE, 0.0);
+    ofVec3f botRight( CAMERA_SIZE * aspectRatio, -CAMERA_SIZE, 0.0);
     cam = OffAxisCamera(topLeft, botLeft, botRight);
     cam.setPosition(ofVec3f(0.0, 0.0, 50.0f));
 
+    /* calculate grid box dimension */
+    ofVec3f camWidthVec = botRight - botLeft;
+    double camWidth = camWidthVec.length();
+    gridBox = GridBox(ofVec3f(-CAMERA_SIZE * aspectRatio, -CAMERA_SIZE, 0.0f),
+            camWidth, camWidth / aspectRatio, 8.0f);
+}
+
+void ofApp::setup()
+{
     /* load model */
     if (model.loadModel("devbot.3ds", true)) {
         model.setScale(0.02f, 0.02f, 0.02f);
@@ -41,12 +53,6 @@ void ofApp::setup()
     /* set light */
     directionalLight.setDirectional();
     directionalLight.setOrientation(ofVec3f(180.0f, 0.0f, 0.0f));
-
-    /* calculate grid box dimension */
-    ofVec3f camWidthVec = botRight - botLeft;
-    double camWidth = camWidthVec.length();
-    gridBox = GridBox(ofVec3f(-cameraSize * aspectRatio, -cameraSize, 0.0f),
-            camWidth, camWidth / aspectRatio, 10.0f, 8.0f);
 
     /* setup tracker */
     tracker.setup();
@@ -59,6 +65,8 @@ void ofApp::setup()
     /* setup gui */
     gui = new ofxUICanvas();
     setupGui();
+
+    setupScene(ofGetWidth(), ofGetHeight());
 }
 
 void ofApp::update()
@@ -72,7 +80,7 @@ void ofApp::update()
                     (videoGrabber.getHeight()/2 - trackerPos.y));
             cam.setPosition(newCamPos.x * trackerSensitivityX,
                     newCamPos.y * trackerSensitivityY,
-                    camZ + -tracker.getScale() * trackerSensitivityZ);
+                    camZ - tracker.getScale() * trackerSensitivityZ);
         }
     } else {
         cam.setPosition(camXY->getScaledValue().x, camXY->getScaledValue().y, camZ);
@@ -89,26 +97,26 @@ void ofApp::draw()
 
     /* draw camera feed */
     if (trackingEnabled && showTracker) {
-        videoGrabber.draw(ofGetWidth() - videoGrabber.getWidth(),
-                ofGetHeight() - videoGrabber.getHeight());
+        tracker.draw();
+        videoGrabber.draw(0, 0);
     }
 
     cam.begin();
 //    directionalLight.enable();
-    ofSetColor(ofColor::cyan);
-    model.setPosition(0.0f, -4.0f, -2.0f);
+    ofSetColor(ofColor::yellow);
+    model.setPosition(5.0f, -4.0f, modelsZPosition + modelsSeparation);
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
 
-    ofSetColor(ofColor::yellow);
-    model.setPosition(5.0f, -4.0f, 5.0f);
+    ofSetColor(ofColor::cyan);
+    model.setPosition(0.0f, -4.0f, modelsZPosition + -2.0f);
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
 
     ofSetColor(ofColor::magenta);
-    model.setPosition(-5.0f, -4.0f, -10.0f);
+    model.setPosition(-5.0f, -4.0f, modelsZPosition -modelsSeparation);
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
 
     ofSetColor(ofColor::white);
-    gridBox.draw();
+    gridBox.draw(gridBoxDepth);
 //    directionalLight.disable();
     cam.end();
 
@@ -146,7 +154,7 @@ void ofApp::mouseReleased(int x, int y, int button)
 
 void ofApp::windowResized(int w, int h)
 {
-
+    setupScene(w, h);
 }
 
 void ofApp::gotMessage(ofMessage msg)
