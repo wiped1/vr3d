@@ -20,6 +20,7 @@ private:
     ofxAssimpModelLoader model;
     GridBox gridBox;
     ofLight directionalLight;
+    ofVec2f trackerOffset;
 
     /* gui */
     ofTrueTypeFont arial;

@@ -12,10 +12,13 @@ void ofApp::setupGui() {
     camXY = gui->add2DPad("CAMERA X, Y", ofPoint(-10, 10), ofPoint(10, -10), ofPoint(0, 0));
     camXY->setIncrement(0.1);
     gui->addSpacer();
+
     gui->addSlider("TRACKER X SENSITIVITY", 0.0, 1.0, &trackerSensitivityX);
     gui->addSlider("TRACKER Y SENSITIVITY", 0.0, 1.0, &trackerSensitivityY);
     gui->addSlider("TRACKER Z SENSITIVITY", 0.0, 50.0, &trackerSensitivityZ);
+    gui->addLabelButton("ADD TRACKER OFFSET", false);
     gui->addSpacer();
+
     gui->addSlider("MODELS Z POSITION", -20.0, 10.0, &modelsZPosition);
     gui->addSlider("MODELS SEPARATION", -50.0, 50.0, &modelsSeparation);
     gui->addSlider("GRIDBOX DEPTH", 0.0, 50.0, &gridBoxDepth);
@@ -86,6 +89,10 @@ void ofApp::update()
         cam.setPosition(camXY->getScaledValue().x, camXY->getScaledValue().y, camZ);
     }
 
+    /* add offset */
+    cam.setPosition(cam.getPosition().x + trackerOffset.x,
+            cam.getPosition().y + trackerOffset.y,
+            cam.getPosition().z);
     cam.update();
 }
 
@@ -124,47 +131,13 @@ void ofApp::draw()
 
 void ofApp::keyPressed(int key)
 {
-
-}
-
-void ofApp::keyReleased(int key)
-{
-
-}
-
-void ofApp::mouseMoved(int x, int y )
-{
-
-}
-
-void ofApp::mouseDragged(int x, int y, int button)
-{
-
-}
-
-void ofApp::mousePressed(int x, int y, int button)
-{
-
-}
-
-void ofApp::mouseReleased(int x, int y, int button)
-{
-
-}
-
-void ofApp::windowResized(int w, int h)
-{
-    setupScene(w, h);
-}
-
-void ofApp::gotMessage(ofMessage msg)
-{
-
-}
-
-void ofApp::dragEvent(ofDragInfo dragInfo)
-{
-
+    switch (key) {
+        case 'h':
+        case 'H': {
+            gui->toggleVisible();
+            break;
+        }
+    }
 }
 
 void ofApp::exit()
@@ -190,20 +163,11 @@ void ofApp::guiEvent(ofxUIEventArgs &e)
         ofxUIToggle* toggle = e.getToggle();
         showTracker = toggle->getValue();
     }
-    else if (e.getName() == "FOV")
-    {
-        //offAxisCamera.setFov(fov);
-    }
-    else if (e.getName() == "Z DEPTH")
-    {
-        //offAxisCamera.setPosition(offAxisCamera.getPosition().x, offAxisCamera.getPosition().y, zDepth);
-    }
-    else if (e.getName() == "PAD") {
-        ofxUI2DPad* pad = (ofxUI2DPad*)e.widget;
-//        if (!trackingEnabled) {
-//            offAxisCamera.setPosition(pad->getScaledValue().x,
-//                    pad->getScaledValue().y,
-//                    offAxisCamera.getPosition().z);
-//        }
+    else if (e.getName() == "ADD TRACKER OFFSET") {
+        ofxUIButton *button = (ofxUIButton *)e.widget;
+        if (button->getValue()) {
+            trackerOffset = ofVec2f(cam.getPosition().x - trackerOffset.x,
+                    cam.getPosition().y - trackerOffset.y);
+        }
     }
 }
