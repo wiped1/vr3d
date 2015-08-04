@@ -115,11 +115,11 @@ void ofApp::draw()
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
 
     ofSetColor(ofColor::cyan);
-    model.setPosition(0.0f, -4.0f, modelsZPosition + -2.0f);
+    model.setPosition(0.0f, -4.0f, modelsZPosition);
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
 
     ofSetColor(ofColor::magenta);
-    model.setPosition(-5.0f, -4.0f, modelsZPosition -modelsSeparation);
+    model.setPosition(-5.0f, -4.0f, modelsZPosition - modelsSeparation);
     model.draw(ofPolyRenderMode::OF_MESH_FILL);
 
     ofSetColor(ofColor::white);
@@ -138,6 +138,46 @@ void ofApp::keyPressed(int key)
             break;
         }
     }
+}
+
+void ofApp::keyReleased(int key)
+{
+
+}
+
+void ofApp::mouseMoved(int x, int y )
+{
+
+}
+
+void ofApp::mouseDragged(int x, int y, int button)
+{
+
+}
+
+void ofApp::mousePressed(int x, int y, int button)
+{
+
+}
+
+void ofApp::mouseReleased(int x, int y, int button)
+{
+
+}
+
+void ofApp::windowResized(int w, int h)
+{
+    setupScene(w, h);
+}
+
+void ofApp::gotMessage(ofMessage msg)
+{
+
+}
+
+void ofApp::dragEvent(ofDragInfo dragInfo)
+{
+
 }
 
 void ofApp::exit()
