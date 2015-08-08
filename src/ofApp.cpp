@@ -16,7 +16,8 @@ void ofApp::setupGui() {
     gui->addSlider("TRACKER X SENSITIVITY", 0.0, 1.0, &trackerSensitivityX);
     gui->addSlider("TRACKER Y SENSITIVITY", 0.0, 1.0, &trackerSensitivityY);
     gui->addSlider("TRACKER Z SENSITIVITY", 0.0, 50.0, &trackerSensitivityZ);
-    gui->addLabelButton("ADD TRACKER OFFSET", false);
+    gui->addLabelButton("SET TRACKER OFFSET", false);
+    gui->addLabelButton("REMOVE TRACKER OFFSET", false);
     gui->addSpacer();
 
     gui->addSlider("MODELS Z POSITION", -20.0, 10.0, &modelsZPosition);
@@ -81,18 +82,13 @@ void ofApp::update()
             const ofVec2f& trackerPos = tracker.getPosition();
             ofVec2f newCamPos((videoGrabber.getWidth()/2) - trackerPos.x,
                     (videoGrabber.getHeight()/2 - trackerPos.y));
-            cam.setPosition(newCamPos.x * trackerSensitivityX,
-                    newCamPos.y * trackerSensitivityY,
+            cam.setPosition((newCamPos.x + trackerOffset.x) * trackerSensitivityX,
+                    (newCamPos.y + trackerOffset.y) * trackerSensitivityY,
                     camZ - tracker.getScale() * trackerSensitivityZ);
         }
     } else {
         cam.setPosition(camXY->getScaledValue().x, camXY->getScaledValue().y, camZ);
     }
-
-    /* add offset */
-    cam.setPosition(cam.getPosition().x + trackerOffset.x,
-            cam.getPosition().y + trackerOffset.y,
-            cam.getPosition().z);
     cam.update();
 }
 
@@ -203,11 +199,17 @@ void ofApp::guiEvent(ofxUIEventArgs &e)
         ofxUIToggle* toggle = e.getToggle();
         showTracker = toggle->getValue();
     }
-    else if (e.getName() == "ADD TRACKER OFFSET") {
+    else if (e.getName() == "SET TRACKER OFFSET") {
         ofxUIButton *button = (ofxUIButton *)e.widget;
         if (button->getValue()) {
             trackerOffset = ofVec2f(cam.getPosition().x - trackerOffset.x,
                     cam.getPosition().y - trackerOffset.y);
+        }
+    }
+    else if (e.getName() == "REMOVE TRACKER OFFSET") {
+        ofxUIButton *button = (ofxUIButton *)e.widget;
+        if (button->getValue()) {
+            trackerOffset = ofVec2f();
         }
     }
 }
